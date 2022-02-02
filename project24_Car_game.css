@@ -32,7 +32,7 @@ body{
 #score{
     border-radius: 100rem;
 }
-#high_score, #restart, #Resume{
+#high_score, #restart, #Resume, #reset{
     display: none;
 }
 .track{
