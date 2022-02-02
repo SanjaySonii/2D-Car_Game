@@ -3,6 +3,7 @@ let overAudio = new Audio(`Carbrakeandcrash.mp3`)
 let mycar = document.getElementById(`mycar`);
 let play = document.getElementById(`play`);
 let high_score = document.getElementById(`high_score`);
+let reset = document.getElementById(`reset`);
 let pause = document.getElementById(`pause`);
 let score = document.getElementById(`score`);
 let Resume = document.getElementById(`Resume`);
@@ -22,6 +23,10 @@ var Start = false;
 // mycar.style.left = "45rem";
 mycar.style.top = "35rem";
 
+reset.addEventListener(`click`,()=>{
+    localStorage.clear();
+    window.location.reload();
+})
 play.addEventListener(`click`, () => {
     if(play.innerText == `Start Game`){
         Start = true;
@@ -163,6 +168,7 @@ function gameover(car) {
         score.style.display = "none";
         pause.style.display = "none";
         play.style.display = "inline";
+        reset.style.display = "inline";
         restart.style.display = "inline";
         play.innerText = `GameOver`;
     }
