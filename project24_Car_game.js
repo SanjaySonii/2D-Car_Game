@@ -11,7 +11,12 @@ let restart = document.getElementById(`restart`);
 let track = document.querySelector(`.track`);
 let newCar = document.getElementsByClassName(`newCar`);
 let hr = document.getElementsByTagName(`hr`);
-let keys = { ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false }
+let keys = {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowRight: false,
+    ArrowLeft: false
+}
 let parameterX = 0;
 let parameterY = 0;
 let parameter = 0;
@@ -23,13 +28,15 @@ var Start = false;
 // mycar.style.left = "45rem";
 mycar.style.top = "35rem";
 
-reset.addEventListener(`click`,()=>{
+reset.addEventListener(`click`, () => {
     localStorage.clear();
     window.location.reload();
 })
 play.addEventListener(`click`, () => {
-    if(play.innerText == `Start Game`){
+    if (play.innerText == `Start Game`) {
         Start = true;
+        pause.style.display = 'block';
+        score.style.display = 'block';
         canMove();
         gamePlaying();
         play.style.display = "none";
@@ -72,21 +79,28 @@ function canMove() {
     document.addEventListener(`keydown`, keydown)
     function keydown(e) {
         if (Start) {
+            let player = {
+                speed: 8,
+            };
             keys[e.key] = true;
-            if (e.key == `ArrowUp`) {
-                if (parameterY <= -34) { } else { parameterY -= 2; }
+            player.x = mycar.offsetLeft;
+            player.y = mycar.offsetTop;
+            let road = track.getBoundingClientRect();
+
+            if (keys.ArrowUp && player.y > road.top ) {
+                player.y = player.y - player.speed;
             }
-            else if (e.key == `ArrowDown`) {
-                if (parameterY >= 2) { } else { parameterY += 2; }
+            if (keys.ArrowDown && player.y < road.bottom - 150 ) {
+                player.y = player.y + player.speed;
             }
-            else if (e.key == `ArrowRight`) {
-                if (parameterX >= 10) { } else { parameterX += 2; }
+            if (keys.ArrowLeft && player.x > road.left + 25 ) {
+                player.x = player.x - player.speed;
             }
-            else if (e.key == `ArrowLeft`) {
-                if (parameterX <= -10) { } else { parameterX -= 2; }
+            if (keys.ArrowRight && player.x < road.right - 120 ) {
+                player.x = player.x + player.speed;
             }
-            mycar.style.top = 35 + Number(parameterY) + `rem`;
-            mycar.style.left = 45 + Number(parameterX) + `rem`;
+            mycar.style.top = player.y + 'px';
+            mycar.style.left = player.x + 'px';
         }
     }
     document.addEventListener(`keyup`, keyup)
@@ -158,7 +172,7 @@ function gameover(car) {
             HighScore = highObj.pop();
         }
         console.log(highObj);
-        if(HighScore < currentScore){
+        if (HighScore < currentScore) {
             HighScore = currentScore;
         }
         high_score.style.display = "inline";
